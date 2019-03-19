@@ -1,0 +1,66 @@
+#!/usr/bin/env python3
+
+import subprocess, unittest, re
+
+marker = ' #\xA0'
+
+annotation_re = re.compile('^.*#\xA0(.*)$', re.MULTILINE)
+
+def reap(text, annotations=True, output=True, history=None):
+  command = ['./reap.py']
+  if not annotations:
+    command.append('--no-annotations')
+  if not output:
+    command.append('--no-output')
+  if history != None:
+    command.append('--history')
+    command.append(str(history))
+  completed_process = subprocess.run(
+    command,
+    capture_output=True,
+    input=text.encode('utf-8'),
+    check=True,
+  )
+  return completed_process.stdout.decode('utf-8')
+
+def annotations(text):
+  return list(annotation_re.findall(text))
+
+class Integration(unittest.TestCase):
+  def annotation(self, text, *expected, **kwargs):
+    output = reap(text, **kwargs)
+    actual = annotations(output)
+    expected = list(expected)
+    self.assertEqual(actual, expected)
+
+  def test_annotations(self):
+    self.annotation('1+1', '2')
+    self.annotation('1+1\n', '2')
+    self.annotation('1+1;2+2\n', '2; 4')
+    self.annotation("x = 'foo'; y = 'bar'\n", "'foo'; 'bar'")
+
+  def test_history(self):
+    self.annotation('def f(n):\n return n+1\nf(0)\nf(1)', '', '1, 2', '1', '2', history=2)
+
+  def test_no_annotations(self):
+    self.annotation('1+1', annotations=False)
+    self.annotation('1+1\n', annotations=False)
+    self.annotation('1+1;2+2\n', annotations=False)
+    self.annotation("x = 'foo'; y = 'bar'\n", annotations=False)
+    self.annotation('def f(n):\n return n+1\nf(0)\nf(1)', history=2, annotations=False)
+
+  def test_ends(self):
+    self.assertEqual(reap('1+1'), '1+1 #\xA02')
+    self.assertEqual(reap('1+1\n'), '1+1 #\xA02\n')
+    self.assertEqual(reap('1+1\r\n'), '1+1 #\xA02\r\n')
+
+  def test_output(self):
+    output = reap('print("foo")')
+    self.assertEqual(output, 'print("foo") #\xA0\n#\xA0foo\n')
+
+  def test_no_output(self):
+    output = reap('print("foo")', output=False)
+    self.assertEqual(output, 'print("foo") #\xA0')
+
+if __name__ == '__main__':
+  unittest.main()
