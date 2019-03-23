@@ -135,7 +135,7 @@ if args.verbose:
     sys.stderr.write(f'{repr(line.space)}, ')
     sys.stderr.write(f'{repr(line.annotation)}, ')
     sys.stderr.write(f'{repr(line.end)}, ')
-    sys.stderr.write('\n')
+    sys.stderr.write(os.linesep)
 
 output = output_sink.getvalue()
 
