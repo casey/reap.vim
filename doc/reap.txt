@@ -126,20 +126,19 @@ free to open issues with feature requests and bug reports.
 REAP - WISHLIST                                                  *reap-wishlist*
 ------------------------------------------------------------------------------
 
-Reap has many omissions, including:
+There are lots of things that Reap should do:
 
-- It should be possible to configure the operator that reap uses, and
-  un-hijack = and 'equalprg'.
+- Configure the operator, allowing un-hijacking = and 'equalprg'
 
-- Reap should optionally use the integrated python3 interpreter, if Vim is
-  compiled with one.
+- Use the integrated Python 3 interpreter, if Vim is compiled with one.
 
-- Reap should support languages other than Python3.
+- Support languages other than Python
 
-- Reap should be avialable as a command, i.e. `:Reap`, as well as an operator.
+- Be available as a command, i.e. `:Reap`, as well as an operator.
 
-- `reap.py` has options to turn off value and output annotations, and to print
-  more of a values evaluation history. Reap does not expose these options.J
+- Annotate if, for, yield, raise, assert, and while statements
+
+- Expose the options that `reap.py` takes as configuration
 
 Pull-requests with implementations of the above are most welcome!
 
