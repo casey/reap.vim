@@ -57,6 +57,8 @@ REAP - INTRO                                                        *reap-intro*
 Reap.vim hijacks the = operator to run Python 3 source code directly from vim
 buffers, annotating it with values and ouput.
 
+A demonstration is online here: https://youtu.be/BNYddRCqfSY
+
 Use ={motion} on the code you want to run, or == to evaluate the current line.
 
 Reap is provided as a plugin, available at `github.com/casey/reap.vim`. A nice
