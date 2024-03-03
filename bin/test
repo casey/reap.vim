@@ -67,8 +67,5 @@ class Integration:
 class Python3(Integration, unittest.TestCase):
   interpreter = os.path.expanduser("python3")
 
-class Python37(Integration, unittest.TestCase):
-  interpreter = os.path.expanduser("python3.7")
-
 if __name__ == '__main__':
   unittest.main()
