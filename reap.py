@@ -68,7 +68,7 @@ class Tap(ast.NodeTransformer):
   def rewrite(self, value, lineno, col_offset):
     return ast.Call(
       func=ast.Name('tap', ctx=ast.Load()),
-      args=[self.generic_visit(value), ast.Num(n=lineno - 1), ast.Num(n=col_offset)],
+      args=[self.generic_visit(value), ast.Constant(value=lineno - 1), ast.Constant(value=col_offset)],
       keywords=[],
     )
 
